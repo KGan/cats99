@@ -1,0 +1,36 @@
+<h1>Cats#show</h1>
+<table>
+  <th><%= @cat.name %> </th>
+  <% @cat.attributes.each do |attribute, value| %>
+    <% next if attribute.to_s == 'name' %>
+    <tr>
+      <td><%= attribute %></td>
+      <td><%= value %></td>
+    </tr>
+  <% end %>
+</table>
+
+<%= button_to "Make A New Request", new_rental_url, :method => :get %>
+
+
+<div>
+  <label> Requested timeslots </label>
+</div>
+<table>
+  <tr>
+    <th> Start Date </th>
+    <th> End Date </th>
+  </tr>
+  <% @cat.cat_rental_requests.order(:start_date).each do |request| %>
+    <tr>
+      <td><%= request.start_date %></td>
+      <td><%= request.end_date %></td>
+      <% if request.status == "PENDING" %>
+        <td><%= button_to "Approve", approve_url(request), method: :get %>
+        <td><%= button_to "Deny", deny_url(request), method: :get %>
+      <% else %>
+        <td> <%= request.status %> </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

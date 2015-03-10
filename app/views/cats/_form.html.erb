@@ -1,0 +1,48 @@
+
+<form action="<%=url%>" method="post">
+  <% if cat && cat.persisted? %>
+    <input type="hidden" name="_method" value="<%= method_name %>" />
+  <% end %>
+  <label> Name
+    <input type="text" name="cat[name]" value="<%= cat ? cat.name : ""%>" >
+  </label>
+  <br>
+  <label> Male
+    <input type="radio" name="cat[sex]" value="M"
+    <% if cat && cat.sex == 'M' %>
+      checked
+    <% end %>
+    >
+  </label>
+  <br>
+  <label> Female
+    <input type="radio" name="cat[sex]" value="F"
+    <% if cat && cat.sex == 'F' %>
+      checked
+    <% end %>
+    >
+  </label>
+  <br>
+  <label> Color
+    <select name="cat[color]">
+      <option selected="selected"></option>
+      <% Cat::COLORS.each do |color| %>
+        <option value="<%= color %>"
+          <% if cat && cat.color == color %>
+            selected
+          <% end %>
+          > <%= color %> </option>
+      <% end %>
+    </select>
+  </label>
+  <br>
+  <label> Birthday
+    <input type="date" name="cat[birth_date]">
+  </label>
+  <br>
+  <label> Description
+    <textarea name="cat[description]"><%= cat.description if cat %></textarea>
+  </label>
+  <br>
+  <input type="submit" value="Submit">
+</form>

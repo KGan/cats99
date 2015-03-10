@@ -1,0 +1,19 @@
+
+<form action="<%=url%>" method="post">
+  <input type="hidden" name="_method" value="<%= method_name %>" />
+  <label> Cat
+    <select name="rental[cat_id]">
+      <option selected="selected"></option>
+      <% Cat.all.each do |cat| %>
+        <option value="<%= cat.id %>"><%= cat.name %></option>
+      <% end %>
+    </select>
+  </label><br><br>
+  <label> Start Date
+    <input type="date" name="rental[start_date]">
+  </label>
+  <label> End Date
+    <input type="date" name="rental[end_date]">
+  </label>
+  <input type="submit" value="Submit">
+</form>
