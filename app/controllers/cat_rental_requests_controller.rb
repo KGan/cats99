@@ -1,11 +1,14 @@
 class CatRentalRequestsController < ApplicationController
+  before_action :is_owner?, only: [:approve, :deny]
+
   def index
     @cat_requests = Cat.find(params[:cat_id]).cat_rental_requests
     render :index
   end
 
   def create
-    @cat_rental = CatRentalRequest.new(rental_params)
+    merged_params = rental_params.merge({user_id: current_user.id})
+    @cat_rental = CatRentalRequest.new(merged_params)
     if @cat_rental.save
       redirect_to rental_url(@cat_rental)
     else
@@ -17,7 +20,10 @@ class CatRentalRequestsController < ApplicationController
   def new
     @cat_rental = CatRentalRequest.new(cat_id: 0,
                                        start_date: Date.tomorrow,
-                                       end_date: Date.tomorrow.tomorrow)
+                                       end_date: Date.tomorrow.tomorrow
+                                       )
+
+    @cat_id = params[:cat_id]
     render :new
   end
 
@@ -57,5 +63,12 @@ class CatRentalRequestsController < ApplicationController
   private
     def rental_params
       params.require(:rental).permit(:cat_id, :start_date, :end_date)
+    end
+
+    def is_owner?
+      request = CatRentalRequest.find(params[:id])
+      if !request.is_owner?(current_user.id)
+        redirect_to :back
+      end
     end
 end

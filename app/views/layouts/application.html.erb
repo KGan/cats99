@@ -7,6 +7,9 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+<%= "hi " + current_user.user_name if current_user %>
+<%= render partial: "sessions/sessions", locals: {current_user: current_user, logged: logged_in? } %>
+
 
 <%= render 'layouts/flashes' %>
 

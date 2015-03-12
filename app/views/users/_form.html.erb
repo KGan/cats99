@@ -1,0 +1,18 @@
+<form action="<%= url %>" method="post">
+  <input type="hidden"
+       name="authenticity_token"
+       value="<%= form_authenticity_token %>">
+  <input type="hidden" name="_method" value="<%= method_name %>" />
+  <label> Username
+    <input type="text" name="user[user_name]" value="<%= user.name unless user.nil? %>" />
+  </label><br>
+  <label> <%= user ? "Old Password" : "Password" %>
+    <input type="password" name="user[password]" />
+  </label>
+  <% if user && user.persisted? %>
+  <label> New Password
+    <input type="password" name="user[new_pass]" />
+  </label>
+  <% end %>
+  <input type="submit" value="Submit">
+</form>

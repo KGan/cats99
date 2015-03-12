@@ -1,0 +1,19 @@
+<% if !logged %>
+<%= button_to "Log In", new_session_url, method: :get %>
+<%= button_to "Sign Up", new_user_url, method: :get %>
+<% else %>
+<h1><%= "Hi" + " " + current_user.user_name %></h1>
+<%= button_to "Log Out", session_url, method: :delete %>
+<% end %>
+
+
+
+<% if current_user %>
+<h1> Other sessions </h1>
+  <% current_user.sessions.each do |sess| %>
+  <% next if session[:session_token] == sess.session_token %>
+  <% agent = UserAgent.parse(sess.environment) %>
+    <label> <%= agent.browser + ", " + agent.platform %></label>
+    <%= button_to "Log Out", log_out_remote_url(sess), method: :delete %>
+  <% end %>
+<% end %>
